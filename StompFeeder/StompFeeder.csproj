@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -64,23 +65,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Visual Studio 2012\Projects\StompDotNet\StompDotNet\StompDotNet.csproj">
-      <Project>{fe8dbc23-b57f-46d3-83b3-d1ceb8d8f966}</Project>
-      <Name>StompDotNet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PLHLib\PLHLib.csproj">
       <Project>{44774517-D919-4BC9-AB94-F3087BD25AAC}</Project>
       <Name>PLHLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StompDotNet\StompDotNet.csproj">
+      <Project>{fe8dbc23-b57f-46d3-83b3-d1ceb8d8f966}</Project>
+      <Name>StompDotNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\Generated\Database.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
