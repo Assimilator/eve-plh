@@ -50,7 +50,8 @@ namespace EVE_Killboard_Analyser.Controllers
             {
                 using (var context = new DatabaseContext())
                 {
-                    IpBlock.ThrowIfBlocked(Request, context);
+                    //Removing the ip block
+                    //IpBlock.ThrowIfBlocked(Request, context);
 
                     context.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;");
 
