@@ -35,34 +35,53 @@ namespace EVE_Killboard_Analyser_Test
 
             var killWithoutCyno = new Kill();
             var killWithCyno = new Kill();
-            var victim = new Victim() {CharacterID = 1};
+            var victim = new Victim() {CharacterID = 1, ShipTypeID = 33468 };
             killWithCyno.Victim = victim;
+            killWithCyno.KillTime = DateTime.Today;
             killWithoutCyno.Victim = victim;
+            killWithoutCyno.KillTime = DateTime.Today;
             killWithoutCyno.Items = new List<Item>();
             killWithCyno.Items = new List<Item>();
             killWithCyno.Items.Add(new Item() { Flag = 1, TypeID = 28646 });
 
             kills.Add(killWithCyno);
-
             var ct = new CynoTagCreator();
-            Assert.AreEqual("Cynochar", ct.TagsFromCollection(1, kills).Single());
 
+            try
+            {
+                Assert.AreEqual("Cynochar", ct.TagsFromCollection(1, kills).Single());
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            
+            for (int i = 0; i < 20; ++i)
+            {
+                kills.Add(killWithoutCyno);
+            }
+
+            Assert.AreEqual(21, kills.Count());
+            Assert.IsTrue(kills.Contains(killWithCyno));
+            Assert.IsTrue(kills.Contains(killWithoutCyno));
+
+            try
+            {
+                Assert.IsFalse(!ct.TagsFromCollection(1, kills).Any());
+                Assert.IsTrue(ct.TagsFromCollection(1, kills).Single().Contains("bait"));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             var kills2 = new List<Kill>();
-            for (int i = 0; i < 20; ++i)
+            for (int i = 0; i < 30; ++i)
             {
                 kills2.Add(killWithoutCyno);
             }
-            kills2.Add(killWithCyno);
-
-            Assert.AreEqual("Uses Cynos", ct.TagsFromCollection(1, kills2).Single());
-
-            var kills3 = new List<Kill>();
-            for (int i = 0; i < 30; ++i)
-            {
-                kills3.Add(killWithoutCyno);
-            }
-            Assert.IsFalse(ct.TagsFromCollection(1, kills3).Any());
+            Assert.IsFalse(ct.TagsFromCollection(1, kills2).Any());
         }
 
         public class Muh

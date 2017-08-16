@@ -26,24 +26,28 @@ namespace EVE_Killboard_Analyser.Helper.TagCreator
             Func<Kill, bool> cynoLossPredicate = kill => kill.Items.Any(item => item.Flag != 5 && (item.TypeID == 28646 || item.TypeID == 21096));
 
             var recentCynoLosses = recentLosses.Count(cynoLossPredicate);
+            var startDate = DateTime.Now.AddYears(-1);
             if (IsDedicatedCynoChar(recentLosses.Count, recentCynoLosses))
             {
                return new List<string>{"Cynochar"};
             }
-
-            var startDate = DateTime.Now.AddYears(-1);
-            var countingLosses = losses.Where(x =>
-                x.KillTime > startDate && !NOOB_AND_T1_FRIG_IDS.Contains(x.Victim.ShipTypeID)).Include(a => a.Items).ToList();
-            var usesCombatCyno = countingLosses.Any(x => x.Items.Any(item => item.Flag != 5 && (item.TypeID == 28646 || item.TypeID == 21096)));
-
-            if (!usesCombatCyno)
+            else
             {
-                return new List<string>();
+                var lossList = losses.Where(loss =>
+                    loss.KillTime > startDate && !NOOB_AND_T1_FRIG_IDS.Contains(loss.Victim.ShipTypeID)).Include(a => a.Items);
+                var countingLosses = lossList.ToList();
+                var usesCombatCyno = countingLosses.Any(cynoLossPredicate);
+
+                if (!usesCombatCyno)
+                {
+                    return new List<string>();
+                }
+
+                var last = countingLosses.Where(cynoLossPredicate).OrderByDescending(x => x.KillTime).First().KillTime;
+
+                return new List<string> { string.Format("Occasional cyno-bait (last: {0})", last.ToString("yyyy-MM-dd")) };
             }
-
-            var last = countingLosses.Where(cynoLossPredicate).OrderByDescending(x => x.KillTime).First().KillTime;
-
-            return new List<string>{string.Format("Occasional cyno-bait (last: {0})", last.ToString("yyyy-MM-dd"))};
+            
         }
 
         private static readonly int[] NOOB_AND_T1_FRIG_IDS = new int[] {CAPSULE_ID, 602, 603, 605, 582, 583, 584, 585, 586, 587, 598, 599, 3766, 597, 29248, 589, 590, 591, 2161, 607, 608, 609, 592, 593, 594, 596, 601, 606, 588 };
