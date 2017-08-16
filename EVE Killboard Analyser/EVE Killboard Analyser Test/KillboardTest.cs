@@ -60,7 +60,7 @@ namespace EVE_Killboard_Analyser_Test
             var kills3 = new List<Kill>();
             for (int i = 0; i < 30; ++i)
             {
-                kills2.Add(killWithoutCyno);
+                kills3.Add(killWithoutCyno);
             }
             Assert.IsFalse(ct.TagsFromCollection(1, kills3).Any());
         }

@@ -70,7 +70,7 @@ namespace EVE_Killboard_Analyser_Test
                                                             SolarSystemID1 = 1,
                                                             SolarSystemID2 = 2
                                                         });
-            _gateCampDetector.AddRange(new[] {GetArtySvipulKill(),});
+            _gateCampDetector.AddRange(new[] {GetArtySvipulKill(isOld: true) });
 
             _gateCampDetector.DetectGateCamps();
 
